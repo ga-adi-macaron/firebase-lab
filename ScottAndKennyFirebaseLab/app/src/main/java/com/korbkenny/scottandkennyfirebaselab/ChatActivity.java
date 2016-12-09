@@ -1,6 +1,7 @@
 package com.korbkenny.scottandkennyfirebaselab;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -17,14 +18,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.List;
-
 public class ChatActivity extends AppCompatActivity {
     private EditText mMessageEdit;
     private CardView mSendButton;
     private RecyclerView mRecyclerView;
     private FirebaseRecyclerAdapter mAdapter;
-    private List<Message> mMessages;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +64,8 @@ public class ChatActivity extends AppCompatActivity {
             public void onClick(View view) {
                 FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
-                int color = Color.BLUE;
+                SharedPreferences preferences = getSharedPreferences("color", MODE_PRIVATE);
+                int color = preferences.getInt("user_color", Color.WHITE);
 
                 User user = new User(color, firebaseUser.getDisplayName());
                 Message message = new Message (user, mMessageEdit.getText().toString());
