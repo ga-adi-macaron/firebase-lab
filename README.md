@@ -43,3 +43,9 @@ An app that allows people to join the chatroom, and send chat messages to each o
 
 - [Firebase Quickstart](https://www.firebase.com/docs/android/quickstart.html)
 - [Firebase UI](https://github.com/firebase/FirebaseUI-Android)
+
+---
+
+## Licensing
+1. All content is licensed under a CC­BY­NC­SA 4.0 license.
+2. All software code is licensed under GNU GPLv3. For commercial use or alternative licensing, please contact [legal@ga.co](mailto:legal@ga.co).
