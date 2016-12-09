@@ -1,5 +1,6 @@
 package com.korbkenny.scottandkennyfirebaselab;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,9 +11,8 @@ public class Chatroom {
     private List<Message> mMessages;
     private String mName;
 
-    public Chatroom(String name, List<Message> messages) {
-        mMessages = messages;
-        mName = name;
+    public Chatroom() {
+        mMessages = new ArrayList<>();
     }
 
     public List<Message> getMessages() {
@@ -21,5 +21,9 @@ public class Chatroom {
 
     public String getName() {
         return mName;
+    }
+
+    public void setName(String name) {
+        mName = name;
     }
 }

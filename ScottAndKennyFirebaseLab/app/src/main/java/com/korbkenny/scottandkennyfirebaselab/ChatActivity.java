@@ -53,6 +53,7 @@ public class ChatActivity extends AppCompatActivity {
                 viewHolder.itemView.setBackgroundColor(model.getUser().getColor());
             }
         };
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     private void setUpViews(final DatabaseReference ref){

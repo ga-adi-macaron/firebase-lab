@@ -8,6 +8,10 @@ public class User {
     int mColor;
     String mUsername;
 
+    public User(){
+
+    }
+    
     public User(int color, String username) {
         mColor = color;
         mUsername = username;

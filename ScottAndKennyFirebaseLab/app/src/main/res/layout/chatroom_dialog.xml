@@ -2,11 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="wrap_content">
-
-    <com.github.danielnilsson9.colorpickerview.view.ColorPickerView
-        android:id="@+id/color_picker_view"
+              android:layout_height="match_parent">
+    <EditText
+        android:id="@+id/chatroom_name_edit"
         android:layout_margin="16dp"
+        android:hint="New Chatroom Name"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"/>
 </LinearLayout>

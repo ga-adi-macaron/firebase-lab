@@ -8,6 +8,10 @@ public class Message {
     User mUser;
     String mText;
 
+    public Message(){
+
+    }
+
     public Message(User user, String text) {
         mUser = user;
         mText = text;
