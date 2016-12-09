@@ -5,18 +5,19 @@ package com.korbkenny.scottandkennyfirebaselab;
  */
 
 public class User {
-    String mColor, mUsername;
+    int mColor;
+    String mUsername;
 
-    public User(String color, String username) {
+    public User(int color, String username) {
         mColor = color;
         mUsername = username;
     }
 
-    public String getColor() {
+    public int getColor() {
         return mColor;
     }
 
-    public void setColor(String color) {
+    public void setColor(int color) {
         mColor = color;
     }
 

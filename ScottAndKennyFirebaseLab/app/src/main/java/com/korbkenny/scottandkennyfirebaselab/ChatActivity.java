@@ -16,7 +16,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.twitter.sdk.android.core.models.User;
+
+import java.util.List;
 
 public class ChatActivity extends AppCompatActivity {
     private EditText mMessageEdit;
@@ -67,7 +68,7 @@ public class ChatActivity extends AppCompatActivity {
 
                 int color = Color.BLUE;
 
-                User user = new User(firebaseUser.getDisplayName(), color);
+                User user = new User(color, firebaseUser.getDisplayName());
                 Message message = new Message (user, mMessageEdit.getText().toString());
 
                 ref.push().setValue(message);
