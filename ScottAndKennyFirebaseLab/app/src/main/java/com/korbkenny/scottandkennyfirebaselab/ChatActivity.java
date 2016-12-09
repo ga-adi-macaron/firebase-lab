@@ -18,6 +18,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.twitter.sdk.android.core.models.User;
 
+import java.util.List;
+
 public class ChatActivity extends AppCompatActivity {
     private EditText mMessageEdit;
     private CardView mSendButton;
