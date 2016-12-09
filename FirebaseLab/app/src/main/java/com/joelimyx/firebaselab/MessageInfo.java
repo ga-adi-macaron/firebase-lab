@@ -5,30 +5,22 @@ package com.joelimyx.firebaselab;
  */
 
 public class MessageInfo {
-    private String mUsername;
-    private String mMessage;
+    private String username;
+    private String message;
 
     public MessageInfo() {
     }
 
     public MessageInfo(String username, String message) {
-        mUsername = username;
-        mMessage = message;
+        this.username = username;
+        this.message = message;
     }
 
     public String getUsername() {
-        return mUsername;
-    }
-
-    public void setUsername(String username) {
-        mUsername = username;
+        return username;
     }
 
     public String getMessage() {
-        return mMessage;
-    }
-
-    public void setMessage(String message) {
-        mMessage = message;
+        return message;
     }
 }

@@ -87,15 +87,6 @@ public class MainActivity extends AppCompatActivity
             }
         };
 
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.web_client_ID))
-                .requestEmail()
-                .build();
-
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this,this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API,gso)
-                .build();
         mSignInButton.setOnClickListener(this);
 
         /*---------------------------------------------------------------------------------
@@ -104,7 +95,8 @@ public class MainActivity extends AppCompatActivity
 
         mReference = database.getReference("chatroom");
         FirebaseRecyclerAdapter firebaseRecyclerAdapter =
-                new FirebaseRecyclerAdapter<MessageInfo, MainViewHolder>(MessageInfo.class,
+                new FirebaseRecyclerAdapter<MessageInfo, MainViewHolder>
+                        (MessageInfo.class,
                         android.R.layout.simple_list_item_2,
                         MainViewHolder.class,
                         mReference){
