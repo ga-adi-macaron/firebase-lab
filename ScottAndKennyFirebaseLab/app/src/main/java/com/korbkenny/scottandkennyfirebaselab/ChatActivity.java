@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -51,7 +50,7 @@ public class ChatActivity extends AppCompatActivity {
                 (Message.class, R.layout.message_recycler_item, ChatViewHolder.class, ref) {
             @Override
             protected void populateViewHolder(ChatViewHolder viewHolder, Message model, int position) {
-                viewHolder.mUserName.setText(model.getUser().getUsername());
+                viewHolder.mUserName.setText(model.getUser().getUsername()+":");
                 viewHolder.mMessage.setText(model.getText());
                 viewHolder.itemView.setBackgroundColor(model.getUser().getColor());
             }
@@ -68,12 +67,10 @@ public class ChatActivity extends AppCompatActivity {
             public void onClick(View view) {
                 FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
-                Log.d(TAG, "onClick: "+firebaseUser.getDisplayName());
-
                 SharedPreferences preferences = getSharedPreferences("color", MODE_PRIVATE);
                 int color = preferences.getInt("user_color", Color.WHITE);
 
-                User user = new User(color, firebaseUser.getDisplayName());
+                User user = new User(color, firebaseUser.getEmail());
                 Message message = new Message (user, mMessageEdit.getText().toString());
 
                 mMessageEdit.setText("");

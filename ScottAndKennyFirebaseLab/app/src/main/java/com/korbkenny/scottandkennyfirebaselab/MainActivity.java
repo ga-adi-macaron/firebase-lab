@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -17,23 +16,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ui.ResultCodes;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.github.danielnilsson9.colorpickerview.view.ColorPickerView;
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -47,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private FirebaseRecyclerAdapter mAdapter;
     private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
     private int mUserColor;
 
 
@@ -56,29 +46,22 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(WEB_CLIENT_ID)
-                .build();
-
-        GoogleApiClient googleAPIClient = new GoogleApiClient.Builder(this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
-
         mAuth = FirebaseAuth.getInstance();
 
-
         if (mAuth.getCurrentUser() != null) {
-            SharedPreferences sharedPref = getPreferences(MODE_PRIVATE);
-            getSupportActionBar().setTitle("Logged in as "+sharedPref.getString("user_name","Guest"));
+            getSupportActionBar().setTitle("Logged in as "+mAuth.getCurrentUser().getEmail());
         } else{
-            Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleAPIClient);
-            startActivityForResult(signInIntent, RC_SIGN_IN);
+            startActivityForResult(
+                    AuthUI.getInstance().createSignInIntentBuilder()
+                            .setProviders(Arrays.asList(
+                                    new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build()))
+                            .build(),
+                    RC_SIGN_IN);
         }
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         mRef = database.getReference("chatrooms");
 
-        setUpAuthStateListener();
         setUpAddChatroomButton();
         setUpRecycler(mRef);
         setUpColorButton();
@@ -89,52 +72,21 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == RESULT_OK) {
-                GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-                if (result.isSuccess()) {
-                    GoogleSignInAccount account = result.getSignInAccount();
-                    AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
-                    mAuth.signInWithCredential(credential)
-                            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
-                                    if (!task.isSuccessful()) {
-                                        Log.w(TAG, "signInWithCredential", task.getException());
-                                        Toast.makeText(MainActivity.this, "Authentication failed.",
-                                                Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
-                } else {
-                    Toast.makeText(this, "Google Sign in Failed", Toast.LENGTH_SHORT).show();
-                }
+                // user is signed in!
+                startActivity(new Intent(this, MainActivity.class));
+                finish();
+                return;
+            }
+            if (resultCode == RESULT_CANCELED) {
+                Toast.makeText(this, "SIGN IN CANCELLED", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (resultCode == ResultCodes.RESULT_NO_NETWORK) {
+                Toast.makeText(this, "NO INTERNET!", Toast.LENGTH_SHORT).show();
+                return;
             }
         }
-        if (resultCode == RESULT_CANCELED) {
-            Toast.makeText(this, "SIGN IN CANCELLED", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (resultCode == ResultCodes.RESULT_NO_NETWORK) {
-            Toast.makeText(this, "NO INTERNET!", Toast.LENGTH_SHORT).show();
-            return;
-        }
     }
-
-    public void setUpAuthStateListener(){
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null){
-                    SharedPreferences.Editor prefEditor =
-                            getSharedPreferences("user", MODE_PRIVATE).edit()
-                            .putString("user_name", user.getDisplayName());
-                    prefEditor.commit();
-                }
-            }
-        };
-    }
-
 
     public void setUpRecycler(DatabaseReference ref){
         mRecyclerView = (RecyclerView)findViewById(R.id.chatroom_recycler);
@@ -167,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
     public void setUpAddChatroomButton(){
         mAddChatroomButton = (CardView)findViewById(R.id.add_chatroom_button);
         mAddChatroomButton.setOnClickListener(new View.OnClickListener() {
@@ -237,17 +190,6 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        mAuth.addAuthStateListener(mAuthListener);
-    }
 
     public static class ChatroomViewHolder extends RecyclerView.ViewHolder {
         public TextView mChatroomName;
