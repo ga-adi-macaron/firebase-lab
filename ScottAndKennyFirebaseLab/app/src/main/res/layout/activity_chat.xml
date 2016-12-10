@@ -37,8 +37,10 @@
         android:layout_toLeftOf="@id/send_button"
         android:layout_alignParentBottom="true"/>
     <android.support.v7.widget.RecyclerView
+        android:layout_above="@id/message_edit"
         android:id="@+id/chat_recycler"
+        android:layout_marginBottom="8dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent"/>
 
 </RelativeLayout>

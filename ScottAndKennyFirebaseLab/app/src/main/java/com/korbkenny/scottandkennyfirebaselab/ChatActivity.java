@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -19,6 +20,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class ChatActivity extends AppCompatActivity {
+    private static final String TAG = "ChatActivity";
+
     private EditText mMessageEdit;
     private CardView mSendButton;
     private RecyclerView mRecyclerView;
@@ -65,12 +68,15 @@ public class ChatActivity extends AppCompatActivity {
             public void onClick(View view) {
                 FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
+                Log.d(TAG, "onClick: "+firebaseUser.getDisplayName());
+
                 SharedPreferences preferences = getSharedPreferences("color", MODE_PRIVATE);
                 int color = preferences.getInt("user_color", Color.WHITE);
 
                 User user = new User(color, firebaseUser.getDisplayName());
                 Message message = new Message (user, mMessageEdit.getText().toString());
 
+                mMessageEdit.setText("");
                 ref.push().setValue(message);
             }
         });
