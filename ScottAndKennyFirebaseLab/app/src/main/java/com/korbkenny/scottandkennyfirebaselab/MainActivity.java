@@ -26,10 +26,16 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Arrays;
 
+/**
+ *
+ * The dependency for the ColorpickerView was found here:
+ * https://github.com/danielnilsson9/color-picker-view
+ *
+ */
+
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
-    private static final String WEB_CLIENT_ID = "223532779792-vkt6l2578jf8shnu24bge4vqliqnqqj8.apps.googleusercontent.com";
     public static final String CHATROOM_INTENT_KEY = "chatroom key";
     private static final int RC_SIGN_IN = 12345;
     private DatabaseReference mRef;
