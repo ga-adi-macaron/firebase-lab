@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "223532779792",
+    "firebase_url": "https://scottandkennyfirebaselab.firebaseio.com",
+    "project_id": "scottandkennyfirebaselab",
+    "storage_bucket": "scottandkennyfirebaselab.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:223532779792:android:2cd1ff94731486e1",
+        "android_client_info": {
+          "package_name": "com.korbkenny.scottandkennyfirebaselab"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "223532779792-m71o2q5k0g8p7ejhrh8ug7dd6tkk8dej.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.korbkenny.scottandkennyfirebaselab",
+            "certificate_hash": "C760A2C6268C9C47822AF8AD668155ADD190C000"
+          }
+        },
+        {
+          "client_id": "223532779792-vkt6l2578jf8shnu24bge4vqliqnqqj8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWXL94A8jQ6KCI0Jxa5Wqo3ISjlHo1ebc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "223532779792-vkt6l2578jf8shnu24bge4vqliqnqqj8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
